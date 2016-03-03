@@ -15,6 +15,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DrawIdeaVisualizationActivity"
+            android:label="@string/title_activity_draw_idea_visualization"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.wizard.cmpt381.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
