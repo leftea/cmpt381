@@ -9,6 +9,10 @@ import android.view.View;
 
 public class DrawIdeaCanvasActivity extends AppCompatActivity {
 
+    /*TODO:
+        Add reference to IdeaCanvas model
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
