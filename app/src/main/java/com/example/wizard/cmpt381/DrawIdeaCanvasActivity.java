@@ -6,12 +6,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-
 public class DrawIdeaCanvasActivity extends AppCompatActivity {
 
-    /*TODO:
-        Add reference to IdeaCanvas model
-     */
+/*TODO
+    Add IdeaCanvasView (Has reference to the IdeaCanvas model) and controls for drawing on it
+    to this activity.
+
+ */
+    private IdeaCanvasView ideaCanvasView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,5 +32,5 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
+    
 }
