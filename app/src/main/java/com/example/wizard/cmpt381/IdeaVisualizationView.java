@@ -2,21 +2,19 @@ package com.example.wizard.cmpt381;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.ImageView;
 
 /**
  * IdeaShapeView displays the visualized idea in a shape
  * It will be draggable around the MainActivity
  */
-public class IdeaShapeView extends ImageView {
+public class IdeaVisualizationView extends ImageView {
 
     private String mExampleString; // TODO: use a default from R.string...
     private int mExampleColor = Color.RED; // TODO: use a default from R.color...
@@ -27,17 +25,17 @@ public class IdeaShapeView extends ImageView {
     private float mTextWidth;
     private float mTextHeight;
 
-    public IdeaShapeView(Context context) {
+    public IdeaVisualizationView(Context context) {
         super(context);
         init(null, 0);
     }
 
-    public IdeaShapeView(Context context, AttributeSet attrs) {
+    public IdeaVisualizationView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(attrs, 0);
     }
 
-    public IdeaShapeView(Context context, AttributeSet attrs, int defStyle) {
+    public IdeaVisualizationView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(attrs, defStyle);
     }
@@ -45,22 +43,22 @@ public class IdeaShapeView extends ImageView {
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.IdeaShapeView, defStyle, 0);
+                attrs, R.styleable.IdeaVisualizationView, defStyle, 0);
 
         mExampleString = a.getString(
-                R.styleable.IdeaShapeView_exampleString);
+                R.styleable.IdeaVisualizationView_exampleString);
         mExampleColor = a.getColor(
-                R.styleable.IdeaShapeView_exampleColor,
+                R.styleable.IdeaVisualizationView_exampleColor,
                 mExampleColor);
         // Use getDimensionPixelSize or getDimensionPixelOffset when dealing with
         // values that should fall on pixel boundaries.
         mExampleDimension = a.getDimension(
-                R.styleable.IdeaShapeView_exampleDimension,
+                R.styleable.IdeaVisualizationView_exampleDimension,
                 mExampleDimension);
 
-        if (a.hasValue(R.styleable.IdeaShapeView_exampleDrawable)) {
+        if (a.hasValue(R.styleable.IdeaVisualizationView_exampleDrawable)) {
             mExampleDrawable = a.getDrawable(
-                    R.styleable.IdeaShapeView_exampleDrawable);
+                    R.styleable.IdeaVisualizationView_exampleDrawable);
             mExampleDrawable.setCallback(this);
         }
 

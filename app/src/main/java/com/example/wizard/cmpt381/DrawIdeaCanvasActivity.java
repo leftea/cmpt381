@@ -32,5 +32,6 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-    
+
+
 }

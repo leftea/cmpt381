@@ -3,16 +3,16 @@ package com.example.wizard.cmpt381;
 import android.graphics.Bitmap;
 
 /**
- * IdeaShape: Data Model for the visualized ideas on MainView. Holds bitmaps and other necessary
+ * IdeaVisualization: Data Model for the visualized ideas on MainView. Holds bitmaps and other necessary
  * attributes
  */
-public class IdeaShape {
+public class IdeaVisualization {
     private Bitmap mIdeaBitmap;
     private Bitmap mShapeBitmap;
     private Bitmap mIdeaShapeBitmap;
     private IdeaCanvas pIdeaCanvas;
 
-    public IdeaShape(Bitmap mIdeaBitmap, Bitmap mShapeBitmap, Bitmap mIdeaShapeBitmap, IdeaCanvas pIdeaCanvas) {
+    public IdeaVisualization(Bitmap mIdeaBitmap, Bitmap mShapeBitmap, Bitmap mIdeaShapeBitmap, IdeaCanvas pIdeaCanvas) {
         this.mIdeaBitmap = mIdeaBitmap;
         this.mShapeBitmap = mShapeBitmap;
         this.mIdeaShapeBitmap = mIdeaShapeBitmap;
