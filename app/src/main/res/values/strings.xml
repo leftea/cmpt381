@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">Cmpt381</string>
+    <string name="app_name">MainActivity</string>
     <string name="title_activity_draw_idea_visualization">DrawIdeaVisualizationActivity</string>
     <string name="title_activity_draw_idea_canvas">DrawIdeaCanvasActivity</string>
+    <string name="action_add">action_add</string>
+    <string name="action_settings">action_settings</string>
+    <string name="action_image_brush">action_image_brush</string>
 </resources>

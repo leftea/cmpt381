@@ -9,4 +9,20 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.wizard.cmpt381.MainActivity">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:gravity="right">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_action_add" />
+    </LinearLayout>
 </RelativeLayout>
