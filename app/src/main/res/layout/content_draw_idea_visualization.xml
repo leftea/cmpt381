@@ -12,4 +12,17 @@
     tools:context="com.example.wizard.cmpt381.DrawIdeaVisualizationActivity"
     tools:showIn="@layout/activity_draw_idea_visualization">
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:gravity="right">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DONE"
+            android:id="@+id/button" />
+    </LinearLayout>
 </RelativeLayout>

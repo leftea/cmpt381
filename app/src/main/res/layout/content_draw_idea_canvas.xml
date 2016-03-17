@@ -16,11 +16,12 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="54dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:gravity="right"
-        android:id="@+id/linearLayout">
+        android:id="@+id/linearLayout"
+        android:background="#64b5f6">
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -33,8 +34,21 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/imageButton5"
+            android:src="@drawable/ic_action_eraser" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton4"
+            android:src="@drawable/ic_action_palette" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/imageButton3"
-            android:src="@android:drawable/ic_menu_save" />
+            android:src="@android:drawable/ic_menu_save"
+            android:contentDescription="@string/canvas" />
 
     </LinearLayout>
 
@@ -46,7 +60,7 @@
         <com.example.wizard.cmpt381.IdeaCanvasView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/view"
+            android:id="@+id/ideaCanvasView"
             android:layout_gravity="center" />
     </FrameLayout>
 

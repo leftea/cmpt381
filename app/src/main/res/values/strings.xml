@@ -5,4 +5,5 @@
     <string name="action_add">action_add</string>
     <string name="action_settings">action_settings</string>
     <string name="action_image_brush">action_image_brush</string>
+    <string name="canvas">canvas</string>
 </resources>
