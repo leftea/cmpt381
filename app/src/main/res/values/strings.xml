@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MainActivity</string>
+    <string name="app_name">Eyedeas</string>
     <string name="title_activity_draw_idea_visualization">DrawIdeaVisualizationActivity</string>
     <string name="title_activity_draw_idea_canvas">DrawIdeaCanvasActivity</string>
     <string name="action_add">action_add</string>

@@ -18,11 +18,41 @@
         android:layout_height="55dp"
         android:gravity="right">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DONE"
-            android:id="@+id/button" />
+            android:id="@+id/imageButton6"
+            android:src="@mipmap/ic_launcher_menu"
+            android:onClick="enableDrawing"
+            android:contentDescription="menu" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton2"
+            android:src="@mipmap/ic_launcher_paint"
+            android:onClick="enableDrawing"
+            android:contentDescription="@string/action_image_brush" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton5"
+            android:src="@mipmap/ic_launcher_erase"
+            android:contentDescription="eraser" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton4"
+            android:src="@mipmap/ic_launcher_palette"
+            android:contentDescription="palette" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton3"
+            android:src="@mipmap/ic_launcher_save"
+            android:contentDescription="@string/canvas" />
     </LinearLayout>
 </RelativeLayout>

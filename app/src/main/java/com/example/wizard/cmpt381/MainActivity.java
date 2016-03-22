@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         //Creates our Main Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.imageButton).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.imageButton1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, DrawIdeaCanvasActivity.class));
