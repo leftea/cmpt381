@@ -19,31 +19,26 @@ public class IdeaCanvasView extends View {
 //    private IdeaCanvas model;  TODO: Turn stuff in here into IC Model
 
     private IdeaCanvas model;
-    public int width;
-    public  int height;
-    private Bitmap mBitmap;
-    private Canvas mCanvas;
-    private Path mPath;
-    private Paint mBitmapPaint;
     Context context;
-    private Paint circlePaint;
-    private Path circlePath;
-    private Paint mPaint;
+    Boolean touchable;
 
     public IdeaCanvasView(Context c) {
         super(c);
         context=c;
         model = new IdeaCanvas();
+        touchable = false;
     }
     public IdeaCanvasView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
         this.context = context;
         model = new IdeaCanvas();
+        touchable = false;
     }
     public IdeaCanvasView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr, 0);
         this.context=context;
         model = new IdeaCanvas();
+        touchable = false;
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -55,14 +50,13 @@ public class IdeaCanvasView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-            canvas.drawBitmap(model.getmBitmap(), 0, 0, model.getmBitmapPaint());
-            canvas.drawPath(model.getmPath(), model.getmPaint());
-            canvas.drawPath(model.getCirclePath(), model.getCirclePaint());
+        canvas.drawBitmap(model.getmBitmap(), 0, 0, model.getmBitmapPaint());
+        canvas.drawPath(model.getmPath(), model.getmPaint());
+        canvas.drawPath(model.getCirclePath(), model.getCirclePaint());
     }
 
     private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
-
     private void touch_start(float x, float y) {
         model.getmPath().reset();
         model.getmPath().moveTo(x, y);
@@ -94,23 +88,37 @@ public class IdeaCanvasView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                touch_start(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                touch_move(x, y);
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                touch_up();
-                invalidate();
-                break;
+//        Boolean wasHandled = false;
+        if(isTouchable()) {
+            wasHandled = true;
+            //handle finger painting!
+            float x = event.getX();
+            float y = event.getY();
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    touch_start(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    touch_move(x, y);
+                    invalidate();
+                    break;
+                case MotionEvent.ACTION_UP:
+                    touch_up();
+                    invalidate();
+                    break;
+            }
+            return true; //consumed
         }
-        return true;
+        return false; //False, not consumed
     }
+
+    public void setTouchable(Boolean b) {
+        touchable = b;
+    }
+
+    public Boolean isTouchable() {
+        return touchable;
+    }
+
 }

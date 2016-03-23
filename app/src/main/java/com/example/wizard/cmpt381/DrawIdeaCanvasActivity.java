@@ -27,7 +27,7 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
  */
     IdeaCanvasView icv;
     Boolean paintSelected;
-
+    Boolean drawButtonSelected;
     //Uncomment for original onCreate
     //@Override
     //protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_draw_idea_canvas);
+        drawButtonSelected = false;
         icv = (IdeaCanvasView) findViewById(R.id.ideaCanvasView);
         icv.setClickable(false);
         findViewById(R.id.imageButton3).setOnClickListener(new View.OnClickListener() {
@@ -52,14 +53,19 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
 
     public void enableDrawing(View v){
         ImageButton view = (ImageButton) v;
-        if (icv.isClickable()) {
+        if (isDrawButtonSelected()) {
             view.getBackground().clearColorFilter();
             view.invalidate();
             icv.setClickable(false);
+            setDrawButtonSelected(!isDrawButtonSelected());
+            icv.setTouchable(isDrawButtonSelected());
         } else {
             view.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
-            v.invalidate();
+            view.invalidate();
             icv.setClickable(true);
+            setDrawButtonSelected(!isDrawButtonSelected());
+            icv.setTouchable(isDrawButtonSelected());
+
         }
     }
 
@@ -70,5 +76,13 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
  //       inflater.inflate(R.menu.ideacanvas, menu);
  //       return true;
  //   }
+
+    public void setDrawButtonSelected(Boolean b) {
+        this.drawButtonSelected = b;
+    }
+
+    public boolean isDrawButtonSelected() {
+        return this.drawButtonSelected;
+    }
 
 }

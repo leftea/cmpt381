@@ -15,35 +15,71 @@ import android.view.View;
  * holds information about the fully featured canvas for the idea.
  */
 public class IdeaCanvas {
-        public int width;
-        public  int height;
-        private Bitmap mBitmap;
-        private Canvas mCanvas;
-        private Path mPath;
-        private Paint mBitmapPaint;
-        private Paint circlePaint;
-        private Path circlePath;
-        private Paint mPaint;
+    public int width;
+    public int height;
+    private Bitmap mBitmap;
+    private Canvas mCanvas;
+    private Path mPath;
+    private Path circlePath;
+    private Paint mBitmapPaint;
+    private Paint circlePaint;
+    private Paint mPaint;
 
-        public IdeaCanvas() {
-            mPath = new Path();
-            mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-            circlePaint = new Paint();
-            circlePath = new Path();
-            circlePaint.setAntiAlias(true);
-            circlePaint.setColor(Color.BLUE);
-            circlePaint.setStyle(Paint.Style.STROKE);
-            circlePaint.setStrokeJoin(Paint.Join.MITER);
-            circlePaint.setStrokeWidth(4f);
-            mPaint = new Paint();
-            mPaint.setAntiAlias(true);
-            mPaint.setDither(true);
-            mPaint.setColor(Color.BLACK);
-            mPaint.setStyle(Paint.Style.STROKE);
-            mPaint.setStrokeJoin(Paint.Join.ROUND);
-            mPaint.setStrokeCap(Paint.Cap.ROUND);
-            mPaint.setStrokeWidth(12);
-        }
+    public IdeaCanvas() {
+        mPath = initPath();
+        circlePath = initPath();
+        mBitmapPaint = initPaint(true);
+        circlePaint = initPaint(false, true, Color.BLUE, Paint.Style.STROKE, Paint.Join.MITER, 4f);
+//            circlePaint.setAntiAlias(true);
+//            circlePaint.setColor(Color.BLUE);
+//            circlePaint.setStyle(Paint.Style.STROKE);
+//            circlePaint.setStrokeJoin(Paint.Join.MITER);
+//            circlePaint.setStrokeWidth(4f);
+        mPaint = initPaint(true, true, Color.BLACK, Paint.Style.STROKE, Paint.Join.ROUND, Paint.Cap.ROUND, 12f);
+//            mPaint = new Paint();
+//            mPaint.setAntiAlias(true);
+//            mPaint.setDither(true);
+//            mPaint.setColor(Color.BLACK);
+//            mPaint.setStyle(Paint.Style.STROKE);
+//            mPaint.setStrokeJoin(Paint.Join.ROUND);
+//            mPaint.setStrokeCap(Paint.Cap.ROUND);
+//            mPaint.setStrokeWidth(12);
+    }
+
+    public Path initPath() {
+         return new Path();
+    }
+    public Paint initPaint(Boolean dither) {
+        if (dither)
+            return new Paint(Paint.DITHER_FLAG);
+        else
+            return new Paint();
+    }
+
+    public Paint initPaint(Boolean dither, Boolean antiAlias, int color, Paint.Style style,
+                           Paint.Join strokeJoin, Paint.Cap strokeCap, Float strokeWidth) {
+        Paint p = initPaint(dither,antiAlias,color,style,strokeJoin,strokeWidth);
+        if (strokeCap != null)
+            p.setStrokeCap(strokeCap);
+        return p;
+    }
+
+    public Paint initPaint(Boolean dither, Boolean antiAlias,int color,Paint.Style style,
+                           Paint.Join strokeJoin, Float strokeWidth) {
+        Paint p = new Paint();
+        p.setDither(dither);
+        p.setAntiAlias(antiAlias);
+        p.setColor(color);
+        if (style != null)
+            p.setStyle(style);
+        if (strokeJoin != null)
+            p.setStrokeJoin(strokeJoin);
+        p.setStrokeWidth(strokeWidth);
+        return p;
+    }
+
+
+
 
     public int getWidth() {
         return width;
@@ -117,6 +153,3 @@ public class IdeaCanvas {
         this.mPaint = mPaint;
     }
 }
-
-
-
