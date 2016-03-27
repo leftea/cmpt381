@@ -71,7 +71,6 @@ public class IdeaCanvasView extends View {
             model.getmPath().quadTo(mX, mY, (x + mX)/2, (y + mY)/2);
             mX = x;
             mY = y;
-
             model.getCirclePath().reset();
             model.getCirclePath().addCircle(mX, mY, 30, Path.Direction.CW);
         }
@@ -90,7 +89,7 @@ public class IdeaCanvasView extends View {
     public boolean onTouchEvent(MotionEvent event) {
 //        Boolean wasHandled = false;
         if(isTouchable()) {
-            wasHandled = true;
+//            wasHandled = true;
             //handle finger painting!
             float x = event.getX();
             float y = event.getY();
@@ -121,4 +120,6 @@ public class IdeaCanvasView extends View {
         return touchable;
     }
 
+    public void undoPaint() { /* TODO: IMPLEMENT*/
+    invalidate();}
 }

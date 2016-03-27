@@ -28,6 +28,7 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
     IdeaCanvasView icv;
     Boolean paintSelected;
     Boolean drawButtonSelected;
+    Boolean eraserButtonSelected;
     //Uncomment for original onCreate
     //@Override
     //protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_draw_idea_canvas);
         drawButtonSelected = false;
+        eraserButtonSelected = false;
         icv = (IdeaCanvasView) findViewById(R.id.ideaCanvasView);
         icv.setClickable(false);
         findViewById(R.id.imageButton3).setOnClickListener(new View.OnClickListener() {
@@ -51,22 +53,65 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
         });
     }
 
-    public void enableDrawing(View v){
-        ImageButton view = (ImageButton) v;
-        if (isDrawButtonSelected()) {
-            view.getBackground().clearColorFilter();
-            view.invalidate();
-            icv.setClickable(false);
-            setDrawButtonSelected(!isDrawButtonSelected());
-            icv.setTouchable(isDrawButtonSelected());
-        } else {
-            view.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
-            view.invalidate();
+    public void imageBrushAction(View v){
+        ImageButton imageBrushBtn = (ImageButton) v;
+        ImageButton eraserBtn = (ImageButton) findViewById(R.id.imageButton5);
+
+        if (!(isDrawButtonSelected() || isEraserButtonSelected())) {
             icv.setClickable(true);
+
+            imageBrushBtn.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+
             setDrawButtonSelected(!isDrawButtonSelected());
             icv.setTouchable(isDrawButtonSelected());
 
+            imageBrushBtn.invalidate();
+        } else {
+            icv.setClickable(false);
+
+            eraserBtn.clearColorFilter();
+            imageBrushBtn.clearColorFilter();
+
+            setDrawButtonSelected(!isDrawButtonSelected());
+            icv.setTouchable(isDrawButtonSelected());
+
+            imageBrushBtn.invalidate();
+            eraserBtn.invalidate();
         }
+    }
+
+    public void eraserAction(View v){
+        ImageButton eraserBtn = (ImageButton) v;
+        ImageButton imageBrushBtn = (ImageButton) findViewById(R.id.imageButton2);
+        if (!(isDrawButtonSelected() || isEraserButtonSelected())) {
+            icv.setClickable(true);
+
+            eraserBtn.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
+
+            setEraserButtonSelected(!isEraserButtonSelected());
+
+            icv.setTouchable(isEraserButtonSelected());
+
+            eraserBtn.invalidate();
+        } else {
+            icv.setClickable(false);
+
+            eraserBtn.clearColorFilter();
+            imageBrushBtn.clearColorFilter();
+
+            setEraserButtonSelected(!isEraserButtonSelected());
+
+            icv.setTouchable(isEraserButtonSelected());
+            icv.setTouchable(isDrawButtonSelected() || isEraserButtonSelected());
+
+            imageBrushBtn.invalidate();
+            eraserBtn.invalidate();
+        }
+    }
+
+    public void undoAction(View v){
+        ImageButton view = (ImageButton) v;
+        icv.undoPaint();
     }
 
     //Uncomment for Menu
@@ -80,9 +125,11 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
     public void setDrawButtonSelected(Boolean b) {
         this.drawButtonSelected = b;
     }
-
+    public void setEraserButtonSelected(Boolean b) { this.eraserButtonSelected = b; }
     public boolean isDrawButtonSelected() {
         return this.drawButtonSelected;
     }
-
+    public boolean isEraserButtonSelected() {
+        return this.eraserButtonSelected;
+    }
 }
