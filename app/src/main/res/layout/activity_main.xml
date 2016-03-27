@@ -30,7 +30,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton2"
+            android:id="@+id/imageBrushButton"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:src="@mipmap/ic_launcher_delete"
@@ -39,7 +39,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton3"
+            android:id="@+id/saveButton"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:src="@mipmap/ic_launcher_help"

@@ -25,7 +25,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton6"
+            android:id="@+id/undoButton"
             android:src="@mipmap/ic_launcher_undo"
             android:onClick="undoAction"
             android:contentDescription="undo" />
@@ -33,7 +33,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton2"
+            android:id="@+id/imageBrushButton"
             android:src="@mipmap/ic_launcher_paint"
             android:onClick="imageBrushAction"
             android:contentDescription="@string/action_image_brush" />
@@ -41,7 +41,7 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton5"
+            android:id="@+id/eraserButton"
             android:src="@mipmap/ic_launcher_erase"
             android:onClick="eraserAction"
             android:contentDescription="eraser" />
@@ -49,14 +49,14 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton4"
+            android:id="@+id/paletteButton"
             android:src="@mipmap/ic_launcher_palette"
             android:contentDescription="palette" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton3"
+            android:id="@+id/saveButton"
             android:src="@mipmap/ic_launcher_save"
             android:contentDescription="@string/canvas" />
 

@@ -1,14 +1,12 @@
 package com.example.wizard.cmpt381;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
+
+import java.util.ArrayList;
 
 /**
  * IdeaCanvas data model
@@ -24,9 +22,12 @@ public class IdeaCanvas {
     private Paint mBitmapPaint;
     private Paint circlePaint;
     private Paint mPaint;
+    private ArrayList<Path> paths = new ArrayList<Path>();
+    private ArrayList<Path> undoPaths = new ArrayList<Path>();
 
     public IdeaCanvas() {
         mPath = initPath();
+        paths.add(mPath);
         circlePath = initPath();
         mBitmapPaint = initPaint(true);
         circlePaint = initPaint(false, true, Color.BLUE, Paint.Style.STROKE, Paint.Join.MITER, 4f);
@@ -49,6 +50,7 @@ public class IdeaCanvas {
     public Path initPath() {
          return new Path();
     }
+
     public Paint initPaint(Boolean dither) {
         if (dither)
             return new Paint(Paint.DITHER_FLAG);
@@ -152,4 +154,41 @@ public class IdeaCanvas {
     public void setmPaint(Paint mPaint) {
         this.mPaint = mPaint;
     }
+
+    public ArrayList<Path> getPaths() { return paths; }
+    public ArrayList<Path> getUndoPaths() { return undoPaths; }
+
+    public boolean canUndoPaint() {
+        return (paths.size() > 0);
+    }
+
+    /**
+     *
+     * @return true if successful undo, false otherwise
+     */
+    public boolean undoPaint(){
+        if (canUndoPaint()) {
+            undoPaths.add(paths.remove(paths.size() - 1));
+            return true;
+        }
+        return false; // unsucessful
+    }
+
+    public boolean canRedoPaint() {
+        return (undoPaths.size()>0);
+    }
+
+    /**
+     *
+     * @return true if successful redo, false otherwise
+     */
+    public boolean redoPaint() {
+        if (canRedoPaint()) {
+            paths.add(undoPaths.remove(undoPaths.size() - 1));
+            return true; //successful
+        }
+        return false; //unsuccessful
+    }
+
+    //toast the user
 }
