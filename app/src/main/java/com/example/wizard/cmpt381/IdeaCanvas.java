@@ -22,11 +22,14 @@ public class IdeaCanvas {
     private Paint mBitmapPaint;
     private Paint circlePaint;
     private Paint mPaint;
+    private Paint mEraserPaint;
     private ArrayList<Path> paths = new ArrayList<>();
-
+    private ArrayList<Paint> paints = new ArrayList<>();
     public IdeaCanvas() {
         mPath = initPath();
         paths.add(mPath);
+        mPaint = initPaint(true, true, Color.BLACK, Paint.Style.STROKE, Paint.Join.ROUND, Paint.Cap.ROUND, 12f);
+        paints.add(mPaint);
         circlePath = initPath();
         mBitmapPaint = initPaint(true);
         circlePaint = initPaint(false, true, Color.BLUE, Paint.Style.STROKE, Paint.Join.MITER, 4f);
@@ -35,7 +38,8 @@ public class IdeaCanvas {
 //            circlePaint.setStyle(Paint.Style.STROKE);
 //            circlePaint.setStrokeJoin(Paint.Join.MITER);
 //            circlePaint.setStrokeWidth(4f);
-        mPaint = initPaint(true, true, Color.BLACK, Paint.Style.STROKE, Paint.Join.ROUND, Paint.Cap.ROUND, 12f);
+
+        mEraserPaint = initPaint(true, true, Color.WHITE, Paint.Style.STROKE, Paint.Join.ROUND, Paint.Cap.ROUND, 12f);
 //            mPaint = new Paint();
 //            mPaint.setAntiAlias(true);
 //            mPaint.setDither(true);
@@ -44,6 +48,7 @@ public class IdeaCanvas {
 //            mPaint.setStrokeJoin(Paint.Join.ROUND);
 //            mPaint.setStrokeCap(Paint.Cap.ROUND);
 //            mPaint.setStrokeWidth(12);
+
     }
 
     public Path initPath() {
@@ -149,6 +154,9 @@ public class IdeaCanvas {
     public Paint getmPaint() {
         return mPaint;
     }
+    public Paint getmEraserPaint() {
+        return mEraserPaint;
+    }
 
     public void setmPaint(Paint mPaint) {
         this.mPaint = mPaint;
@@ -160,13 +168,16 @@ public class IdeaCanvas {
     }
 
     public boolean canUndoPaint() {
-        return (paths.size() > 0);
+        return (paths.size() > 0) && (paints.size() > 0);
     }
     public void undoPaint(){
         if (canUndoPaint()) {
             paths.remove(paths.size() - 1);
+            paints.remove(paints.size() - 1);
         }
     //toast the user
-}
-
+    }
+    public ArrayList<Paint> getPaints() {
+        return this.paints;
+    }
 }

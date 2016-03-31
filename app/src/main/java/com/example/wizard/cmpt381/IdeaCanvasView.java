@@ -3,12 +3,16 @@ package com.example.wizard.cmpt381;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Pair;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+
+import java.util.ArrayList;
 
 
 /**
@@ -22,6 +26,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     private IdeaCanvas model;
     Context context;
     Boolean touchable;
+    Boolean erase;
     private int w;
     private int h;
     public IdeaCanvasView(Context c) {
@@ -32,6 +37,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         this.setOnTouchListener(this);
         model = new IdeaCanvas();
         touchable = false;
+        erase = false;
 
     }
     public IdeaCanvasView(Context context, AttributeSet attrs) {
@@ -42,6 +48,8 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         this.setOnTouchListener(this);
         model = new IdeaCanvas();
         touchable = false;
+        erase = false;
+
     }
     public IdeaCanvasView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr, 0);
@@ -51,6 +59,8 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         this.setOnTouchListener(this);
         model = new IdeaCanvas();
         touchable = false;
+        erase = false;
+
     }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -64,10 +74,17 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        for (Path p : model.getPaths()){
-            canvas.drawPath(p, model.getmPaint());
+        assert(model.getPaths().size() == model.getPaints().size());
+        for (int i = 0; i < model.getPaths().size(); i++)
+            canvas.drawPath(model.getPaths().get(i), model.getPaints().get(i));
+
+        if (erase){
+        canvas.drawPath(model.getmPath(), model.getmEraserPaint());
         }
-        canvas.drawPath(model.getmPath(), model.getmPaint());
+        else {
+            canvas.drawPath(model.getmPath(), model.getmPaint());
+        }
+
         canvas.drawPath(model.getCirclePath(), model.getCirclePaint());
         canvas.drawBitmap(model.getmBitmap(), 0, 0, model.getmBitmapPaint());
 //        model.setmCanvas(canvas);
@@ -99,9 +116,19 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         model.getmPath().lineTo(mX, mY);
         model.getCirclePath().reset();
         // commit the path to our offscreen
-        model.getmCanvas().drawPath(model.getmPath(), model.getmPaint());
-        // kill this so we don't double draw
-        model.getPaths().add(model.getmPath());
+        //TEST
+//        model.getmCanvas().drawPath(model.getmPath(), model.getmPaint());
+        if(erase) {
+            model.getmCanvas().drawPath(model.getmPath(), model.getmEraserPaint());
+            model.getPaths().add(model.getmPath());
+            model.getPaints().add(model.getmEraserPaint());
+        }
+        else {
+            model.getmCanvas().drawPath(model.getmPath(), model.getmPaint());
+            model.getPaths().add(model.getmPath());
+            model.getPaints().add(model.getmPaint());
+        }
+        // kill path to not double draw
         model.setmPath(new Path());
     }
 

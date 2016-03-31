@@ -80,12 +80,12 @@ private IdeaCanvasView icv;
 
             eraserBtn.getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
             imageBrushBtn.getBackground().clearColorFilter();
-
             setEraserButtonSelected(!isEraserButtonSelected());
             icv.setTouchable(isEraserButtonSelected());
 
             imageBrushBtn.invalidate();
             eraserBtn.invalidate();
+            icv.erase =true;
         } else {
 
             eraserBtn.getBackground().clearColorFilter();
@@ -95,6 +95,7 @@ private IdeaCanvasView icv;
             icv.setTouchable(isEraserButtonSelected());
 
             imageBrushBtn.invalidate();
+            icv.erase = false;
             eraserBtn.invalidate();
             icv.setClickable(false);
         }
