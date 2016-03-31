@@ -22,8 +22,7 @@ public class IdeaCanvas {
     private Paint mBitmapPaint;
     private Paint circlePaint;
     private Paint mPaint;
-    private ArrayList<Path> paths = new ArrayList<Path>();
-    private ArrayList<Path> undoPaths = new ArrayList<Path>();
+    private ArrayList<Path> paths = new ArrayList<>();
 
     public IdeaCanvas() {
         mPath = initPath();
@@ -156,39 +155,18 @@ public class IdeaCanvas {
     }
 
     public ArrayList<Path> getPaths() { return paths; }
-    public ArrayList<Path> getUndoPaths() { return undoPaths; }
+    public void setPaths(ArrayList<Path> paths) {
+        this.paths = paths;
+    }
 
     public boolean canUndoPaint() {
         return (paths.size() > 0);
     }
-
-    /**
-     *
-     * @return true if successful undo, false otherwise
-     */
-    public boolean undoPaint(){
+    public void undoPaint(){
         if (canUndoPaint()) {
-            undoPaths.add(paths.remove(paths.size() - 1));
-            return true;
+            paths.remove(paths.size() - 1);
         }
-        return false; // unsucessful
-    }
-
-    public boolean canRedoPaint() {
-        return (undoPaths.size()>0);
-    }
-
-    /**
-     *
-     * @return true if successful redo, false otherwise
-     */
-    public boolean redoPaint() {
-        if (canRedoPaint()) {
-            paths.add(undoPaths.remove(undoPaths.size() - 1));
-            return true; //successful
-        }
-        return false; //unsuccessful
-    }
-
     //toast the user
+}
+
 }

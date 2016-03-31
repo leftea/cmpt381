@@ -14,7 +14,6 @@ import android.view.View.OnTouchListener;
 /**
  * IdeaCanvasView holds reference to the IdeaCanvas model,
  * is the drawable area for the DrawIdeaCanvasActivity.
- * TODO: IMPLEMENT
  */
 public class IdeaCanvasView extends View implements OnTouchListener {
 //    private IdeaCanvas model;  TODO: Turn stuff in here into IC Model
@@ -23,7 +22,8 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     private IdeaCanvas model;
     Context context;
     Boolean touchable;
-
+    private int w;
+    private int h;
     public IdeaCanvasView(Context c) {
         super(c);
         context=c;
@@ -55,6 +55,8 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        this.w = w;
+        this.h = h;
         model.setmBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
         model.setmCanvas(new Canvas(model.getmBitmap()));
     }
@@ -65,16 +67,15 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         for (Path p : model.getPaths()){
             canvas.drawPath(p, model.getmPaint());
         }
-
-        canvas.drawBitmap(model.getmBitmap(), 0, 0, model.getmBitmapPaint());
         canvas.drawPath(model.getmPath(), model.getmPaint());
         canvas.drawPath(model.getCirclePath(), model.getCirclePaint());
+        canvas.drawBitmap(model.getmBitmap(), 0, 0, model.getmBitmapPaint());
+//        model.setmCanvas(canvas);
     }
 
     private float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;
     private void touch_start(float x, float y) {
-        model.getUndoPaths().clear();
             model.getmPath().reset();
         model.getmPath().moveTo(x, y);
         mX = x;
@@ -82,7 +83,6 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     }
 
     private void touch_move(float x, float y) {
-        Log.d(TAG, "touch_move");
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
@@ -102,7 +102,6 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         model.getmCanvas().drawPath(model.getmPath(), model.getmPaint());
         // kill this so we don't double draw
         model.getPaths().add(model.getmPath());
-
         model.setmPath(new Path());
     }
 
@@ -156,27 +155,20 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     }
 
     public void onUndo() {
-        if (model.undoPaint()) {
-            invalidate();
-        }
-        else {
+        Log.d(TAG, "onUndo");
+        model.undoPaint();
+        model.setmBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
 
-        }
+        Log.d(TAG, "onUndoFinished");
+
+        this.invalidate();
+        Log.d(TAG, "onUndo invalidate called");
+
+
     }
-
-    public void onRedo() {
-        if (model.redoPaint()) {
-            invalidate();
-        }
-        else {
-
-        }
-    }
-
     public void setTouchable(Boolean b) {
         touchable = b;
     }
-
     public Boolean isTouchable() {
         return touchable;
     }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 public class DrawIdeaCanvasActivity extends AppCompatActivity {
 
@@ -100,9 +101,12 @@ private IdeaCanvasView icv;
     }
 
     public void undoAction(View v){
-        icv.onUndo();
-        icv.onDraw(icv.getModel().getmCanvas());
-        icv.invalidate();
+
+        IdeaCanvasView iv = (IdeaCanvasView) findViewById(R.id.ideaCanvasView);
+        iv.onUndo();
+        iv.invalidate();
+        LinearLayout ll = (LinearLayout)findViewById(R.id.linearLayout);
+        ll.invalidate();
     }
 
     //Uncomment for Menu
