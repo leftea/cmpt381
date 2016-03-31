@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 public class DrawIdeaVisualizationActivity extends AppCompatActivity {
 
@@ -17,6 +20,15 @@ public class DrawIdeaVisualizationActivity extends AppCompatActivity {
                 startActivity(new Intent(DrawIdeaVisualizationActivity.this, MainActivity.class));
             }
         });
+
+        ArrayList<ItemData> list = new ArrayList<>();
+        list.add(new ItemData(R.mipmap.ic_launcher_rectangle));
+        list.add(new ItemData(R.mipmap.ic_launcher_circle));
+        list.add(new ItemData(R.mipmap.ic_launcher_triangle));
+        Spinner sp = (Spinner) findViewById(R.id.spinner);
+        SpinnerAdapter adapter = new SpinnerAdapter(this,
+                R.layout.spinner_layout, R.id.img, list);
+        sp.setAdapter(adapter);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //       setSupportActionBar(toolbar);
 /*
