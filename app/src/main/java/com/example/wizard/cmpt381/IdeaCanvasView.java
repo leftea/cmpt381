@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+import com.example.wizard.cmpt381.FileUtils;
 import java.util.ArrayList;
 
 
@@ -20,15 +21,16 @@ import java.util.ArrayList;
  * is the drawable area for the DrawIdeaCanvasActivity.
  */
 public class IdeaCanvasView extends View implements OnTouchListener {
-//    private IdeaCanvas model;  TODO: Turn stuff in here into IC Model
 
     private static final String TAG = "IdeaCanvasView";
-    private IdeaCanvas model;
+    private static final float TOUCH_TOLERANCE = 4;
     Context context;
     Boolean touchable;
     Boolean erase;
+    private IdeaCanvas model;
     private int w;
     private int h;
+    private float mX, mY;
     public IdeaCanvasView(Context c) {
         super(c);
         context=c;
@@ -51,6 +53,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         erase = false;
 
     }
+
     public IdeaCanvasView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr, 0);
         this.context=context;
@@ -62,6 +65,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         erase = false;
 
     }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -90,8 +94,6 @@ public class IdeaCanvasView extends View implements OnTouchListener {
 //        model.setmCanvas(canvas);
     }
 
-    private float mX, mY;
-    private static final float TOUCH_TOLERANCE = 4;
     private void touch_start(float x, float y) {
             model.getmPath().reset();
         model.getmPath().moveTo(x, y);
