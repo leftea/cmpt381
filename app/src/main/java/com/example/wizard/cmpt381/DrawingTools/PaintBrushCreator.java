@@ -1,31 +1,28 @@
 package com.example.wizard.cmpt381.DrawingTools;
 
-/**
- * Created by Wizard on 2016-04-02.
- */
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.view.View;
 
 import com.example.wizard.cmpt381.DrawManager;
 
 import java.util.Random;
 
-public class Paintbrush extends ACreator {
+public class PaintBrushCreator extends ACreator {
 
     public static int MIN_BRISLTES_NUM = 7;
-    public static int MAX_BRISLTES_NUM = 25;
+    public static int MAX_BRISLTES_NUM = 200;
     private static float DIV = 0.85f;
     Painter fPainters[];
     private MultiLineOperation fCurrentOperation = null;
-    private int fBristlesNumber = 10;
+    private int fBristlesNumber = 100; // THIS NEEDS A SLIDER!!!!
     private float fX;
     private float fY;
 
-    public Paintbrush(DrawManager aManager) {
-        super(aManager);
+    public PaintBrushCreator(DrawManager aManager, View aView) {
+        super(aManager, aView);
         fPainters = new Painter[MAX_BRISLTES_NUM];
         for (int i = 0; i < MAX_BRISLTES_NUM; i++) {
             fPainters[i] = new Painter();
@@ -41,7 +38,7 @@ public class Paintbrush extends ACreator {
     }
 
     @Override
-    public IDrawOperation startDrawingOperation(float x, float y) {
+    public MultiLineOperation startDrawingOperation(float x, float y) {
         for (int i = 0; i < fBristlesNumber; i++) {
             fPainters[i].start(x, y);
         }
@@ -50,6 +47,7 @@ public class Paintbrush extends ACreator {
         fCurrentOperation = new MultiLineOperation(x, y, p, fBristlesNumber);
         fX = x;
         fY = y;
+        redraw();
         return fCurrentOperation;
     }
 
@@ -61,6 +59,7 @@ public class Paintbrush extends ACreator {
             fPainters[i].update(x, y);
             fCurrentOperation.addPoint(fPainters[i].X, fPainters[i].Y, i);
         }
+        redraw();
 
     }
 
@@ -81,6 +80,12 @@ public class Paintbrush extends ACreator {
         }
 
         fCurrentOperation = null;
+        getView().invalidate();
+
+    }
+
+    public void redraw() {
+        getView().invalidate();
     }
 
     private class Painter {
@@ -95,7 +100,7 @@ public class Paintbrush extends ACreator {
         public void reset() {
             dX = 0;
             dY = 0;
-            fEase = (new Random().nextFloat()) * .2f + .2f;
+            fEase = new Random().nextFloat() * .2f + .2f;
         }
 
         public void start(float x, float y) {

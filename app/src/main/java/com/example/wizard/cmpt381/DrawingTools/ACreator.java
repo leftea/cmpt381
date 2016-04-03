@@ -1,6 +1,7 @@
 package com.example.wizard.cmpt381.DrawingTools;
 
 import android.graphics.Paint;
+import android.view.View;
 
 import com.example.wizard.cmpt381.DrawManager;
 
@@ -9,16 +10,22 @@ import com.example.wizard.cmpt381.DrawManager;
  */
 public abstract class ACreator {
     private final DrawManager fManager;
+    private final View fView;
 
-    public ACreator(DrawManager aManager) {
+    public ACreator(DrawManager aManager, View aView) {
         fManager = aManager;
+        fView = aView;
     }
 
     protected final Paint getPaint() {
         return fManager.getPaintState().getPaint();
     }
 
-    public abstract IDrawOperation startDrawingOperation(float x, float y);
+    protected final View getView() {
+        return fView;
+    }
+
+    public abstract PaintBrushCreator.MultiLineOperation startDrawingOperation(float x, float y);
 
     public abstract void updateDrawingOperation(float x, float y);
 
@@ -27,4 +34,5 @@ public abstract class ACreator {
     // Clear the creator state (used when clearing the canvas)
     public void clear() {
     }
+
 }

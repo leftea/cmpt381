@@ -24,31 +24,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Environment;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.util.UUID;
 
 public class FileUtils {
 
     private static String FILENAME = "temp_eyedeas.png";
 
     private DrawManager fManager;
+    private Context fContext = null;
 
-    public FileUtils(DrawManager aManager) {
+    public FileUtils(DrawManager aManager, Context aContext) {
         fManager = aManager;
+        fContext = aContext;
     }
 
-    private static File getDirectory() {
-        return new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "DRAWCHEMY");
+    private static File getDirectory(Context aContext) {
+        return aContext.getFilesDir();
     }
 
     public void save(Context aContext) {
@@ -68,7 +66,7 @@ public class FileUtils {
     }
 
     public void loadTempImage(Context aContext) {
-        File dir = getDirectory();
+        File dir = getDirectory(fContext);
         if (dir != null && dir.exists() && dir.isDirectory()) {
             File img = new File(dir, FILENAME);
             if (img != null && img.exists()) {
@@ -91,13 +89,14 @@ public class FileUtils {
         }
 
         protected String getFileName() {
-            return UUID.randomUUID().toString() + ".png";
+//            return UUID.randomUUID().toString() + ".png";
+            return "test.png";
         }
 
         @Override
         protected Boolean doInBackground(Object... objects) {
 
-            File dir = getDirectory();
+            File dir = getDirectory(fContext);
             try {
                 if (!dir.exists()) {
                     if (!dir.mkdir()) {
@@ -120,7 +119,7 @@ public class FileUtils {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
 
-            addFileToMedia(fFile);
+            // addFileToMedia(fFile);
             if (aBoolean) {
                 Toast.makeText(fContext, fContext.getResources().getString(R.string.canvas_saved), Toast.LENGTH_SHORT).show();
                 if (fShare) {
@@ -135,7 +134,7 @@ public class FileUtils {
             }
         }
 
-        protected void addFileToMedia(File aFile) {
+        /*protected void addFileToMedia(File aFile) {
             if (aFile != null && fContext != null && fContext.getApplicationContext() != null) {
                 MediaScannerConnection.scanFile(fContext.getApplicationContext(),
                         new String[]{aFile.toString()}, new String[]{"image/png"},
@@ -145,7 +144,7 @@ public class FileUtils {
                         }
                 );
             }
-        }
+        }*/
     }
 
     public static class SavingImageTaskOnPause extends SavingImageTask {
@@ -154,11 +153,12 @@ public class FileUtils {
             super(aContext, aBitmap, false);
         }
 
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            addFileToMedia(fFile);
-        }
-
+        /*
+                @Override
+                protected void onPostExecute(Boolean aBoolean) {
+                    addFileToMedia(fFile);
+                }
+        */
         @Override
         protected String getFileName() {
             return FILENAME;
@@ -181,6 +181,8 @@ public class FileUtils {
         @Override
         protected Bitmap doInBackground(Object... objects) {
             Bitmap bitmap;
+            File fFile = new File(fContext.getFilesDir(), "test.png");
+            //TODO: LOAD THE TEST THING
             try {
                 bitmap = BitmapFactory.decodeStream(fContext.getContentResolver()
                         .openInputStream(fTargetUri));
