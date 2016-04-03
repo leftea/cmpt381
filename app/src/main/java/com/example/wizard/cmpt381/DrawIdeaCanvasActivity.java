@@ -1,10 +1,12 @@
 package com.example.wizard.cmpt381;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -18,6 +20,7 @@ public class DrawIdeaCanvasActivity extends AppCompatActivity {
 private IdeaCanvasView icv;
     private Boolean drawButtonSelected;
     private Boolean eraserButtonSelected;
+    private ImageButton paletteBtn;
     //Uncomment for original onCreate
     //@Override
     //protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,7 @@ private IdeaCanvasView icv;
                 startActivity(new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class));
             }
         });
+        addListenerOnPaletteButton();
     }
 
     public void imageBrushAction(View v){
@@ -108,6 +112,36 @@ private IdeaCanvasView icv;
         iv.invalidate();
         LinearLayout ll = (LinearLayout)findViewById(R.id.linearLayout);
         ll.invalidate();
+    }
+
+    public void addListenerOnPaletteButton() {
+
+        paletteBtn = (ImageButton) findViewById(R.id.paletteButton);
+
+        paletteBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                showColorPickerDialog();
+            }
+
+        });
+
+    }
+
+    private void showColorPickerDialog() {
+
+        int initialColor = Color.BLACK;
+
+        ColorPickerDialog colorPickerDialog = new ColorPickerDialog(this, initialColor, new ColorPickerDialog.OnColorSelectedListener() {
+
+            public void onColorSelected(int color) {
+                //this is where you want to change the paintbrush color
+            }
+
+        });
+
+        colorPickerDialog.show();
     }
 
     //Uncomment for Menu
