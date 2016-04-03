@@ -167,7 +167,7 @@ public class DrawManager implements OnTouchListener {
     }
 
     public Bitmap copyBitmap() {
-        Bitmap result = Bitmap.createBitmap(fBackgroundImage.getWidth(), fBackgroundImage.getHeight(), Bitmap.Config.RGB_565);
+        Bitmap result = Bitmap.createBitmap(fBackgroundImage.getWidth(), fBackgroundImage.getHeight(), Bitmap.Config.ARGB_8888);
         draw(new Canvas(result));
         return result;
     }
@@ -234,7 +234,7 @@ public class DrawManager implements OnTouchListener {
         matrix.postTranslate(dx, dy);
 
         synchronized (fBackgroundCanvas) {
-            fBackgroundCanvas.drawColor(fPaintState.getColor() | 0xff000000);
+            //     fBackgroundCanvas.drawColor(fPaintState.getColor() | 0xff000000);
             fOperations.clear();
             fBackgroundCanvas.drawBitmap(aBitmap, matrix, null);
             fBackgroundCanvasBackUP.drawBitmap(aBitmap, matrix, null);

@@ -21,22 +21,23 @@ package com.example.wizard.cmpt381;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 public class FileUtils {
 
-    private static String FILENAME = "temp_eyedeas.png";
-
+    private static final String TAG = "FileUtils";
+    private static String FILENAME = "test.png";
     private DrawManager fManager;
     private Context fContext = null;
 
@@ -50,19 +51,16 @@ public class FileUtils {
     }
 
     public void save(Context aContext) {
-        new SavingImageTask(aContext, fManager.copyBitmap(), false).execute();
+        new SavingImageTask(aContext, fManager.copyBitmap()).execute();
     }
 
     public void saveOnPause(Context aContext) {
         new SavingImageTaskOnPause(aContext, fManager.copyBitmap()).execute();
     }
 
-    public void share(Context aContext) {
-        new SavingImageTask(aContext, fManager.copyBitmap(), true).execute();
-    }
 
-    public void load(Context aContext, Uri aTargetUri) {
-        new LoadImageTask(aContext, aTargetUri, fManager).execute();
+    public void load(Context aContext) {
+        new LoadImageTask(aContext, fManager).execute();
     }
 
     public void loadTempImage(Context aContext) {
@@ -78,19 +76,16 @@ public class FileUtils {
     public static class SavingImageTask extends AsyncTask<Object, Integer, Boolean> {
 
         private final Context fContext;
-        private final boolean fShare;
         protected File fFile;
         private Bitmap fBitmap;
 
-        public SavingImageTask(Context aContext, Bitmap aBitmap, boolean aShare) {
+        public SavingImageTask(Context aContext, Bitmap aBitmap) {
             fContext = aContext;
             fBitmap = aBitmap;
-            fShare = aShare;
         }
 
         protected String getFileName() {
-//            return UUID.randomUUID().toString() + ".png";
-            return "test.png";
+            return FILENAME;
         }
 
         @Override
@@ -98,13 +93,14 @@ public class FileUtils {
 
             File dir = getDirectory(fContext);
             try {
-                if (!dir.exists()) {
-                    if (!dir.mkdir()) {
-                        throw new Exception("couldn't create the directory");
-                    }
-                }
+
                 fFile = new File(dir, getFileName());
+                Log.d(TAG, "Saving bitmap into location: " + fFile.getAbsolutePath());
+
                 OutputStream outStream = new FileOutputStream(fFile);
+                Log.d(TAG, "Saving bitimap: made output stream " + outStream.toString());
+                Log.d(TAG, "Saving bitmap: Compressing to PNG");
+
                 fBitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
                 outStream.close();
 
@@ -122,12 +118,6 @@ public class FileUtils {
             // addFileToMedia(fFile);
             if (aBoolean) {
                 Toast.makeText(fContext, fContext.getResources().getString(R.string.canvas_saved), Toast.LENGTH_SHORT).show();
-                if (fShare) {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setDataAndType(Uri.fromFile(fFile), "image/png");
-                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(fFile));
-                    fContext.startActivity(Intent.createChooser(intent, "share"));
-                }
                 super.onPostExecute(true);
             } else {
                 Toast.makeText(fContext, "Error during the saving", Toast.LENGTH_SHORT).show();
@@ -150,7 +140,7 @@ public class FileUtils {
     public static class SavingImageTaskOnPause extends SavingImageTask {
 
         public SavingImageTaskOnPause(Context aContext, Bitmap aBitmap) {
-            super(aContext, aBitmap, false);
+            super(aContext, aBitmap);
         }
 
         /*
@@ -168,27 +158,28 @@ public class FileUtils {
     public static class LoadImageTask extends AsyncTask<Object, Integer, Bitmap> {
 
         private Context fContext;
-        private Uri fTargetUri;
         private DrawManager fManager;
 
-        public LoadImageTask(Context aContext, Uri aTargetUri, DrawManager aManager) {
+        public LoadImageTask(Context aContext, DrawManager aManager) {
             super();
             fContext = aContext;
-            fTargetUri = aTargetUri;
             fManager = aManager;
         }
 
         @Override
         protected Bitmap doInBackground(Object... objects) {
             Bitmap bitmap;
-            File fFile = new File(fContext.getFilesDir(), "test.png");
-            //TODO: LOAD THE TEST THING
+            File fFile = new File(getDirectory(fContext), "test.png");
+            Log.d(TAG, "LoadImageTask background: \n Loading image found in: " + fFile.getAbsolutePath());
+
             try {
-                bitmap = BitmapFactory.decodeStream(fContext.getContentResolver()
-                        .openInputStream(fTargetUri));
+
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(fFile));
+
             } catch (FileNotFoundException e) {
                 bitmap = null;
             }
+
             return bitmap;
         }
 
@@ -196,6 +187,7 @@ public class FileUtils {
         protected void onPostExecute(Bitmap bitmap) {
             if (bitmap != null) {
                 fManager.putBitmapAsBackground(bitmap);
+                Log.d(TAG, "DrawManager putBitmapAsBackground has been called");
             } else {
                 Toast.makeText(fContext, "Error during the loading", Toast.LENGTH_SHORT).show();
             }

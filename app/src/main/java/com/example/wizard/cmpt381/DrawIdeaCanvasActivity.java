@@ -46,11 +46,12 @@ private IdeaCanvasView icv;
         fManager = icv.getCanvasManager();
         fPaintState = fManager.getPaintState();
         final FileUtils fUtils = new FileUtils(fManager, this);
-//        fUtils.load();
+
         fManager.addTool(PAINTBRUSH, new PaintBrushCreator(fManager, icv));
         //fManager.addTool(PAINTBRUSH, new PaintBrushCreator(fManager, icv));
         fManager.setCurrentTool(0);
 
+        fUtils.load(fContext);
 
         icv.setClickable(false);
         findViewById(R.id.saveButton).setOnClickListener(new View.OnClickListener() {
