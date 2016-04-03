@@ -25,7 +25,7 @@ public abstract class ACreator {
         return fView;
     }
 
-    public abstract PaintBrushCreator.MultiLineOperation startDrawingOperation(float x, float y);
+    public abstract IDrawOperation startDrawingOperation(float x, float y);
 
     public abstract void updateDrawingOperation(float x, float y);
 

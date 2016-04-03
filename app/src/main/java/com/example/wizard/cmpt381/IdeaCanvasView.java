@@ -166,17 +166,8 @@ public class IdeaCanvasView extends View implements OnTouchListener {
 
     public void onUndo() {
         fManager.undo();
-        //    Log.d(TAG, "onUndo");
-/*
-        model.undoPaint();
-        model.setmBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
-
-        Log.d(TAG, "onUndoFinished");
-
         invalidate();
-*/
-        invalidate();
-        Log.d(TAG, "onUndo invalidate called");
+        Log.d(TAG, "fManager, onUndo , invalidate called");
     }
     public void setTouchable(Boolean b) {
         touchable = b;
