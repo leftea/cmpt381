@@ -57,7 +57,13 @@
         android:layout_height="375dp"
         android:layout_below="@+id/linearLayout2"
         android:layout_centerHorizontal="true"
-        android:id="@+id/frameLayout"></FrameLayout>
+        android:id="@+id/frameLayout">
+        <com.example.wizard.cmpt381.IdeaVisualizationView
+            android:id="@+id/baseIdeaView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 
     <LinearLayout
         android:orientation="horizontal"
