@@ -37,13 +37,14 @@ import java.io.OutputStream;
 public class FileUtils {
 
     private static final String TAG = "FileUtils";
-    private static String FILENAME = "test.png";
+    private static String FILENAME;
     private DrawManager fManager;
     private Context fContext = null;
 
-    public FileUtils(DrawManager aManager, Context aContext) {
+    public FileUtils(DrawManager aManager, Context aContext, String ID) {
         fManager = aManager;
         fContext = aContext;
+        FILENAME = ID + ".png";
     }
 
     private static File getDirectory(Context aContext) {
@@ -169,7 +170,7 @@ public class FileUtils {
         @Override
         protected Bitmap doInBackground(Object... objects) {
             Bitmap bitmap;
-            File fFile = new File(getDirectory(fContext), "test.png");
+            File fFile = new File(getDirectory(fContext), FILENAME);
             Log.d(TAG, "LoadImageTask background: \n Loading image found in: " + fFile.getAbsolutePath());
 
             try {

@@ -13,7 +13,7 @@ import android.view.View.OnTouchListener;
  * IdeaCanvasView holds reference to the IdeaCanvas model,
  * is the drawable area for the DrawIdeaCanvasActivity.
  */
-public class IdeaCanvasView extends View implements OnTouchListener {
+public class BaseIdeaView extends View implements OnTouchListener {
 
     private static final String TAG = "IdeaCanvasView";
     private static final float TOUCH_TOLERANCE = 4;
@@ -25,7 +25,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     private int w;
     private int h;
     private float mX, mY;
-    public IdeaCanvasView(Context c) {
+    public BaseIdeaView(Context c) {
         super(c);
         context=c;
         setFocusable(true);
@@ -35,7 +35,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         erase = false;
         fManager = new DrawManager();
     }
-    public IdeaCanvasView(Context context, AttributeSet attrs) {
+    public BaseIdeaView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
         this.context = context;
         setFocusable(true);
@@ -46,7 +46,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         fManager = new DrawManager();
     }
 
-    public IdeaCanvasView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public BaseIdeaView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr, 0);
         this.context=context;
         setFocusable(true);
@@ -56,7 +56,6 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         erase = false;
         fManager = new DrawManager();
     }
-
 
     public DrawManager getCanvasManager() {
         return fManager;

@@ -33,18 +33,27 @@ private IdeaCanvasView icv;
     private ImageButton paletteBtn;
     private int backgroundColor;
     private int textColor;
-
+    private String ID; //ID of the canvas for saving/loading
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.content_draw_idea_canvas);
         fContext = this;
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            ID = extras.getString("IDEA_ID");
+        }
+        if (ID == null)
+            ID = "test";
+
+
         drawButtonSelected = false;
         eraserButtonSelected = false;
         icv = (IdeaCanvasView) findViewById(R.id.ideaCanvasView);
         fManager = icv.getCanvasManager();
         fPaintState = fManager.getPaintState();
-        final FileUtils fUtils = new FileUtils(fManager, this);
+        final FileUtils fUtils = new FileUtils(fManager, this, ID);
 
         fManager.addTool(PAINTBRUSH, new SimpleBrushCreator(fManager, icv));
         fManager.setCurrentTool(0);
