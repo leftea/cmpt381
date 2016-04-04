@@ -16,13 +16,70 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="55dp"
-        android:gravity="right">
+        android:gravity="right"
+        android:weightSum="1"
+        android:id="@+id/linearLayout2">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
+        <Spinner
+            android:layout_width="39dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinner"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.47"></Spinner>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageBrushButton"
+            android:src="@mipmap/ic_launcher_paint"
+            android:onClick="enableDrawing"
+            android:contentDescription="@string/action_image_brush" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/eraserButton"
+            android:src="@mipmap/ic_launcher_erase"
+            android:contentDescription="eraser" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/paletteButton"
+            android:src="@mipmap/ic_launcher_palette"
+            android:contentDescription="palette" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="375dp"
+        android:layout_below="@+id/linearLayout2"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/frameLayout"></FrameLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_below="@+id/frameLayout"
+        android:layout_centerHorizontal="true">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DONE"
-            android:id="@+id/button" />
+            android:id="@+id/saveButton"
+            android:src="@mipmap/ic_launcher_save"
+                android:contentDescription="@string/canvas"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>
