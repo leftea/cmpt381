@@ -2,13 +2,12 @@ package com.example.wizard.cmpt381;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -34,15 +33,16 @@ private IdeaCanvasView icv;
     private int backgroundColor;
     private int textColor;
     private String ID; //ID of the canvas for saving/loading
+    private Bundle fExtras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.content_draw_idea_canvas);
         fContext = this;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            ID = extras.getString("IDEA_ID");
+        fExtras = getIntent().getExtras();
+        if (fExtras != null) {
+            ID = fExtras.getString("IDEA_ID");
         }
         if (ID == null)
             ID = "test";
@@ -82,7 +82,8 @@ private IdeaCanvasView icv;
             public void onClick(View v) {
 //TODO:  Save this somewhere.                fManager.getBitmap()
                 fUtils.save(fContext);
-
+                Intent intent = new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class);
+                intent.putExtra("BUNDLE", fExtras);
                 startActivity(new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class));
             }
         });
