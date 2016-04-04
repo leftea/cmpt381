@@ -1,20 +1,12 @@
 package com.example.wizard.cmpt381;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Spinner;
+
+import java.util.ArrayList;
 
 public class DrawIdeaVisualizationActivity extends AppCompatActivity {
 
@@ -22,12 +14,21 @@ public class DrawIdeaVisualizationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_draw_idea_visualization);
-        findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.saveButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(DrawIdeaVisualizationActivity.this, MainActivity.class));
             }
         });
+
+        ArrayList<ItemData> list = new ArrayList<>();
+        list.add(new ItemData(R.mipmap.ic_launcher_rectangle));
+        list.add(new ItemData(R.mipmap.ic_launcher_circle));
+        list.add(new ItemData(R.mipmap.ic_launcher_triangle));
+        Spinner sp = (Spinner) findViewById(R.id.spinner);
+        SpinnerAdapter adapter = new SpinnerAdapter(this,
+                R.layout.spinner_layout, R.id.img, list);
+        sp.setAdapter(adapter);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //       setSupportActionBar(toolbar);
 /*
