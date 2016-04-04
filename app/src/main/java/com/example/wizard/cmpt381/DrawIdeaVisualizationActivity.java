@@ -43,11 +43,17 @@ public class DrawIdeaVisualizationActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "pos, id: " + position + "," + id);
                 if (position == 0) { //Draw Rectangle border
-
+                    fManager.setBackgroundRectangle();
+                    fDrawView.invalidate();
                 } else if (position == 1) { //Draw circle border
-
+                    //                   Paint p = new Paint();
+                    //                   p.setColor(Color.BLACK);
+//                    fManager.addOperation(new CircleOperation(p, new RectF(0, 0, fManager.getWidth(), fManager.getHeight())));
+                    fManager.setBackgroundCircle();
+                    fDrawView.invalidate();
                 } else if (position == 2) { // Draw triangle border
-
+                    fManager.setBackgroundTriangle();
+                    fDrawView.invalidate();
                 }
             }
 

@@ -2,15 +2,20 @@ package com.example.wizard.cmpt381;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.example.wizard.cmpt381.DrawingTools.ACreator;
+import com.example.wizard.cmpt381.DrawingTools.CircleOperation;
 import com.example.wizard.cmpt381.DrawingTools.IDrawOperation;
+import com.example.wizard.cmpt381.DrawingTools.SquareOperation;
+import com.example.wizard.cmpt381.DrawingTools.TriangleOperation;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -157,6 +162,52 @@ public class DrawManager implements OnTouchListener {
             }
         }
     }
+
+    public void setBackgroundCircle() {
+
+        synchronized (fBackgroundCanvas) {
+            fBackgroundCanvas.drawColor(Color.GRAY);   //     fBackgroundCanvas.drawColor(fPaintState.getColor() | 0xff000000);
+        }
+        float rectPadding = 30f;
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        //MAYBE WHITE?
+        p.setStyle(Paint.Style.FILL);
+        RectF rect = new RectF();
+        rect.set(rectPadding, rectPadding, getWidth() - rectPadding, getHeight() - rectPadding);
+        CircleOperation op = new CircleOperation(p, rect);
+        addOperation(op);
+    }
+
+    public void setBackgroundTriangle() {
+
+        synchronized (fBackgroundCanvas) {
+            fBackgroundCanvas.drawColor(Color.GRAY);   //     fBackgroundCanvas.drawColor(fPaintState.getColor() | 0xff000000);
+        }
+        float rectPadding = 30f;
+
+        RectF rect = new RectF();
+        rect.set(rectPadding, rectPadding, getWidth() - rectPadding, getHeight() - rectPadding);
+        TriangleOperation op = new TriangleOperation(new Paint(), rect);
+        addOperation(op);
+    }
+
+    public void setBackgroundRectangle() {
+
+        synchronized (fBackgroundCanvas) {
+            fBackgroundCanvas.drawColor(Color.GRAY);   //     fBackgroundCanvas.drawColor(fPaintState.getColor() | 0xff000000);
+        }
+        float rectPadding = 30f;
+        Paint p = new Paint();
+        p.setColor(Color.WHITE);
+        p.setStyle(Paint.Style.FILL);
+        RectF rect = new RectF();
+        rect.set(rectPadding, rectPadding, getWidth() - rectPadding, getHeight() - rectPadding);
+
+        SquareOperation op = new SquareOperation(p, rect);
+        addOperation(op);
+    }
+
 
     public int getWidth() {
         return fBackgroundImage.getWidth();
