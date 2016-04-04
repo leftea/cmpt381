@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.wizard.cmpt381.DrawingTools.EraserCreator;
-import com.example.wizard.cmpt381.DrawingTools.PaintBrushCreator;
+import com.example.wizard.cmpt381.DrawingTools.SimpleBrushCreator;
 
 public class DrawIdeaCanvasActivity extends AppCompatActivity {
 
@@ -50,7 +50,7 @@ private IdeaCanvasView icv;
         fPaintState = fManager.getPaintState();
         final FileUtils fUtils = new FileUtils(fManager, this);
 
-        fManager.addTool(PAINTBRUSH, new PaintBrushCreator(fManager, icv));
+        fManager.addTool(PAINTBRUSH, new SimpleBrushCreator(fManager, icv));
         fManager.setCurrentTool(0);
         ((ImageButton) findViewById(R.id.imageBrushButton)).getBackground().setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
 

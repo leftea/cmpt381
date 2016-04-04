@@ -1,5 +1,9 @@
 package com.example.wizard.cmpt381.DrawingTools;
 
+/**
+ * Created by Wizard on 2016-04-03.
+ */
+
 import android.graphics.Paint;
 import android.view.View;
 
@@ -7,24 +11,28 @@ import com.example.wizard.cmpt381.DrawManager;
 
 import java.util.Random;
 
-public class EraserCreator extends SimpleBrushCreator {
+public class SimpleBrushCreator extends ACreator {
 
-    private int eraserColour;
-    private float eraserWidth = 40f;
-    public EraserCreator(DrawManager aManager, View aView, int eraserColour) {
+    private final float simpleBrushWidth = 40f; //Todo: Turn into slider
+    protected Painter fPainter;
+    protected LineOperation fCurrentOperation = null;
+    protected float fX;
+    protected float fY;
+
+    public SimpleBrushCreator(DrawManager aManager, View aView) {
         super(aManager, aView);
-        this.eraserColour = eraserColour;
+        fPainter = new Painter();
     }
 
-    //    @Override
+    @Override
     public LineOperation startDrawingOperation(float x, float y) {
 
         fPainter.start(x, y);
 
         Paint p = getPaint();
         p.setStyle(Paint.Style.STROKE);
-        p.setStrokeWidth(40f);
-        p.setColor(eraserColour);
+        p.setStrokeWidth(simpleBrushWidth);
+
         fCurrentOperation = new LineOperation(x, y, p);
         fX = x;
         fY = y;
@@ -58,7 +66,7 @@ public class EraserCreator extends SimpleBrushCreator {
         getView().invalidate();
     }
 
-    private class Painter {
+    protected class Painter {
         float X, Y;
         float dX, dY;
         float fEase;

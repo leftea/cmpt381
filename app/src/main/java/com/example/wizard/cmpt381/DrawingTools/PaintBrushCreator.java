@@ -17,7 +17,7 @@ public class PaintBrushCreator extends ACreator {
     private static float DIV = 0.85f;
     Painter fPainters[];
     private MultiLineOperation fCurrentOperation = null;
-    private int fBristlesNumber = 100; // THIS NEEDS A SLIDER!!!!
+    private int fBristlesNumber = 7; // THIS NEEDS A SLIDER!!!!
     private float fX;
     private float fY;
 
@@ -44,6 +44,7 @@ public class PaintBrushCreator extends ACreator {
         }
         Paint p = getPaint();
         p.setStyle(Paint.Style.STROKE);
+        p.setStrokeWidth(10f);
         fCurrentOperation = new MultiLineOperation(x, y, p, fBristlesNumber);
         fX = x;
         fY = y;
