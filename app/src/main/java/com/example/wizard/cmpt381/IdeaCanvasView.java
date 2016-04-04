@@ -1,19 +1,12 @@
 package com.example.wizard.cmpt381;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Path;
-import android.util.Pair;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-
-import com.example.wizard.cmpt381.FileUtils;
-import java.util.ArrayList;
 
 
 /**
@@ -27,6 +20,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     Context context;
     Boolean touchable;
     Boolean erase;
+    private DrawManager fManager;
     private IdeaCanvas model;
     private int w;
     private int h;
@@ -40,7 +34,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         model = new IdeaCanvas();
         touchable = false;
         erase = false;
-
+        fManager = new DrawManager();
     }
     public IdeaCanvasView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
@@ -51,7 +45,7 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         model = new IdeaCanvas();
         touchable = false;
         erase = false;
-
+        fManager = new DrawManager();
     }
 
     public IdeaCanvasView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -63,22 +57,30 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         model = new IdeaCanvas();
         touchable = false;
         erase = false;
-
+        fManager = new DrawManager();
     }
+
+
+    public DrawManager getCanvasManager() {
+        return fManager;
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         this.w = w;
         this.h = h;
-        model.setmBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
-        model.setmCanvas(new Canvas(model.getmBitmap()));
+//        model.setmBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
+//        model.setmCanvas(new Canvas(model.getmBitmap()));
+        fManager.setup(w, h);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        assert(model.getPaths().size() == model.getPaints().size());
+        fManager.draw(canvas);
+/*        assert(model.getPaths().size() == model.getPaints().size());
         for (int i = 0; i < model.getPaths().size(); i++)
             canvas.drawPath(model.getPaths().get(i), model.getPaints().get(i));
 
@@ -91,14 +93,16 @@ public class IdeaCanvasView extends View implements OnTouchListener {
 
         canvas.drawPath(model.getCirclePath(), model.getCirclePaint());
         canvas.drawBitmap(model.getmBitmap(), 0, 0, model.getmBitmapPaint());
-//        model.setmCanvas(canvas);
+//        model.setmCanvas(canvas);*/
     }
 
+    /*
     private void touch_start(float x, float y) {
             model.getmPath().reset();
         model.getmPath().moveTo(x, y);
         mX = x;
         mY = y;
+        fManager.addOperation();
     }
 
     private void touch_move(float x, float y) {
@@ -133,10 +137,13 @@ public class IdeaCanvasView extends View implements OnTouchListener {
         // kill path to not double draw
         model.setmPath(new Path());
     }
-
+*/
     public boolean onTouch(View arg0, MotionEvent event) {
-        Log.d(TAG, "onTouch");
-        float x = event.getX();
+        Boolean result = fManager.onTouch(arg0, event);
+
+//        Log.d(TAG, "onTouch");
+        return result;
+/*        float x = event.getX();
         float y = event.getY();
 
         switch (event.getAction()) {
@@ -154,46 +161,13 @@ public class IdeaCanvasView extends View implements OnTouchListener {
                 break;
         }
         return true;
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-//        Boolean wasHandled = false;
-        if(isTouchable()) {
-//            wasHandled = true;
-            //handle finger painting!
-            float x = event.getX();
-            float y = event.getY();
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    touch_start(x, y);
-                    invalidate();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    touch_move(x, y);
-                    invalidate();
-                    break;
-                case MotionEvent.ACTION_UP:
-                    touch_up();
-                    invalidate();
-                    break;
-            }
-            return true; //consumed
-        }
-        return false; //False, not consumed
+*/
     }
 
     public void onUndo() {
-        Log.d(TAG, "onUndo");
-        model.undoPaint();
-        model.setmBitmap(Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888));
-
-        Log.d(TAG, "onUndoFinished");
-
-        this.invalidate();
-        Log.d(TAG, "onUndo invalidate called");
-
-
+        fManager.undo();
+        invalidate();
+        Log.d(TAG, "fManager, onUndo , invalidate called");
     }
     public void setTouchable(Boolean b) {
         touchable = b;

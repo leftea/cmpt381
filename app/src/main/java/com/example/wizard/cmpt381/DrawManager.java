@@ -2,16 +2,15 @@ package com.example.wizard.cmpt381;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
+import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
 import com.example.wizard.cmpt381.DrawingTools.ACreator;
+import com.example.wizard.cmpt381.DrawingTools.IDrawOperation;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -21,15 +20,12 @@ import java.util.Map;
  * Class to handle All things Draw-related.
  * paints, paths, drawing operations on a canvas, canvases, bitmaps, listeners, onTouch, etc.
  */
-import android.graphics.Matrix;
-
-import com.example.wizard.cmpt381.DrawingTools.ACreator;
-import com.example.wizard.cmpt381.DrawingTools.IDrawOperation;
 
 
 public class DrawManager implements OnTouchListener {
 
     private static final int MAX_UNDO = 10;
+    private static final String TAG = "DrawManager";
     private final Paint fDitherPaint = new Paint(Paint.DITHER_FLAG);
     private LinkedList<IDrawOperation> fOperations;
     private Map<Integer, ACreator> fCreators;
@@ -41,7 +37,7 @@ public class DrawManager implements OnTouchListener {
     private Bitmap fBackgroundImageBackUP;
     private Canvas fBackgroundCanvasBackUP;
     private boolean initialized = false; //Gets fully initialized on screen size changed, with the bitmaps
-    private PaintState fPaintState;
+    private PaintState fPaintState = new PaintState();
 
     public DrawManager() {
         fOperations = new LinkedList<IDrawOperation>();
@@ -55,12 +51,15 @@ public class DrawManager implements OnTouchListener {
 
     public void setup(int aWidth, int aHeight) {
         if (!initialized) {
+            Log.d(TAG, "initializing DrawManager");
             fBackgroundImage = Bitmap.createBitmap(aWidth, aHeight, Bitmap.Config.ARGB_8888);
             fBackgroundCanvas = new Canvas(fBackgroundImage);
             fBackgroundImageBackUP = Bitmap.createBitmap(aWidth, aHeight, Bitmap.Config.ARGB_8888);
             fBackgroundCanvasBackUP = new Canvas(fBackgroundImageBackUP);
-            fBackgroundCanvas.drawColor(Color.WHITE);
-            fBackgroundCanvasBackUP.drawColor(Color.WHITE);
+            Log.d(TAG, "Created Background and Backup, and Canvases with dimensions:\n" +
+                    " width: " + aWidth + " height: " + aHeight);
+//            fBackgroundCanvas.drawColor(Color.WHITE);
+//            fBackgroundCanvasBackUP.drawColor(Color.WHITE);
             this.initialized = true;
         }
     }
@@ -100,6 +99,7 @@ public class DrawManager implements OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        Log.d(TAG, "onTouch");
         return onTouch(view, new MyMotionEvent(motionEvent.getAction(), motionEvent.getX(), motionEvent.getY()));
     }
 
@@ -167,7 +167,7 @@ public class DrawManager implements OnTouchListener {
     }
 
     public Bitmap copyBitmap() {
-        Bitmap result = Bitmap.createBitmap(fBackgroundImage.getWidth(), fBackgroundImage.getHeight(), Bitmap.Config.RGB_565);
+        Bitmap result = Bitmap.createBitmap(fBackgroundImage.getWidth(), fBackgroundImage.getHeight(), Bitmap.Config.ARGB_8888);
         draw(new Canvas(result));
         return result;
     }
@@ -234,7 +234,7 @@ public class DrawManager implements OnTouchListener {
         matrix.postTranslate(dx, dy);
 
         synchronized (fBackgroundCanvas) {
-            fBackgroundCanvas.drawColor(fPaintState.getColor() | 0xff000000);
+            //     fBackgroundCanvas.drawColor(fPaintState.getColor() | 0xff000000);
             fOperations.clear();
             fBackgroundCanvas.drawBitmap(aBitmap, matrix, null);
             fBackgroundCanvasBackUP.drawBitmap(aBitmap, matrix, null);
