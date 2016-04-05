@@ -2,18 +2,19 @@ package com.example.wizard.cmpt381;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.example.wizard.cmpt381.DrawingTools.EraserCreator;
 import com.example.wizard.cmpt381.DrawingTools.SimpleBrushCreator;
+
+import java.util.concurrent.ExecutionException;
 
 public class DrawIdeaCanvasActivity extends AppCompatActivity {
 
@@ -28,28 +29,29 @@ private IdeaCanvasView icv;
     private DrawManager fManager;
     private PaintState fPaintState;
     private Context fContext;
-    private Boolean drawButtonSelected;
-    private Boolean eraserButtonSelected;
     private ImageButton paletteBtn;
     private int backgroundColor;
     private int textColor;
     private String ID; //ID of the canvas for saving/loading
+    private Bundle fExtras;
+    private int w;
+    private int h;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.content_draw_idea_canvas);
         fContext = this;
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            ID = extras.getString("IDEA_ID");
+        fExtras = getIntent().getExtras();
+        if (fExtras != null) {
+            ID = fExtras.getString("IDEA_ID");
+            w = fExtras.getInt("SHAPE_WIDTH");
+            h = fExtras.getInt("SHAPE_HEIGHT");
+
         }
         if (ID == null)
             ID = "test";
 
-
-        drawButtonSelected = false;
-        eraserButtonSelected = false;
         icv = (IdeaCanvasView) findViewById(R.id.ideaCanvasView);
         fManager = icv.getCanvasManager();
         fPaintState = fManager.getPaintState();
@@ -81,9 +83,20 @@ private IdeaCanvasView icv;
             @Override
             public void onClick(View v) {
 //TODO:  Save this somewhere.                fManager.getBitmap()
-                fUtils.save(fContext);
+                try {
+                    fUtils.save(fContext);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Intent intent = new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class);
+                intent.putExtra("IDEA_VIS", ID+"_VIS");
 
-                startActivity(new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class));
+                intent.putExtra("SHAPE_WIDTH",w);
+                intent.putExtra("SHAPE_HEIGHT",w);
+
+                startActivity(intent);
             }
         });
 
@@ -149,5 +162,11 @@ private IdeaCanvasView icv;
         });
 
         colorPickerDialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }
