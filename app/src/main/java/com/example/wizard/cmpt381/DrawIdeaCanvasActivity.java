@@ -34,6 +34,8 @@ private IdeaCanvasView icv;
     private int textColor;
     private String ID; //ID of the canvas for saving/loading
     private Bundle fExtras;
+    private int w;
+    private int h;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,9 @@ private IdeaCanvasView icv;
         fExtras = getIntent().getExtras();
         if (fExtras != null) {
             ID = fExtras.getString("IDEA_ID");
+            w = fExtras.getInt("SHAPE_WIDTH");
+            h = fExtras.getInt("SHAPE_HEIGHT");
+
         }
         if (ID == null)
             ID = "test";
@@ -83,8 +88,12 @@ private IdeaCanvasView icv;
 //TODO:  Save this somewhere.                fManager.getBitmap()
                 fUtils.save(fContext);
                 Intent intent = new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class);
-                intent.putExtra("BUNDLE", fExtras);
-                startActivity(new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class));
+                intent.putExtra("IDEA_VIS", ID+"_VIS");
+
+                intent.putExtra("SHAPE_WIDTH",w);
+                intent.putExtra("SHAPE_HEIGHT",w);
+
+                startActivity(intent);
             }
         });
 
@@ -150,5 +159,11 @@ private IdeaCanvasView icv;
         });
 
         colorPickerDialog.show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 }

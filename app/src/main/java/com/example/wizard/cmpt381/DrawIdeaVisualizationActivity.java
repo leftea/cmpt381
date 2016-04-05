@@ -1,6 +1,9 @@
 package com.example.wizard.cmpt381;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -16,16 +19,37 @@ public class DrawIdeaVisualizationActivity extends AppCompatActivity {
     private final String TAG = "DrawIVActivity";
     private DrawManager fManager;
     private IdeaVisualizationView fDrawView;
+    private Context fContext;
+    FileUtils fUtils;
+    private Bundle fExtras;
+    private String idea_ID;
+
+    private int w;
+    private int h;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_draw_idea_visualization);
+        fExtras = getIntent().getExtras();
+        if (fExtras != null) {
+            idea_ID = fExtras.getString("IDEA_VIS");
+            w = fExtras.getInt("SHAPE_WIDTH");
+            h = fExtras.getInt("SHAPE_HEIGHT");
+        }
+
+
+
         fDrawView = (IdeaVisualizationView) findViewById(R.id.baseIdeaView);
         fManager = fDrawView.getCanvasManager();
+        fManager.setW(w);
+        fManager.setH(h);
+        fContext = this;
+        final FileUtils fUtils = new FileUtils(fManager, this, idea_ID);
 
         findViewById(R.id.saveButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fUtils.save(fContext);
                 startActivity(new Intent(DrawIdeaVisualizationActivity.this, MainActivity.class));
             }
         });
@@ -46,9 +70,6 @@ public class DrawIdeaVisualizationActivity extends AppCompatActivity {
                     fManager.setBackgroundRectangle();
                     fDrawView.invalidate();
                 } else if (position == 1) { //Draw circle border
-                    //                   Paint p = new Paint();
-                    //                   p.setColor(Color.BLACK);
-//                    fManager.addOperation(new CircleOperation(p, new RectF(0, 0, fManager.getWidth(), fManager.getHeight())));
                     fManager.setBackgroundCircle();
                     fDrawView.invalidate();
                 } else if (position == 2) { // Draw triangle border
@@ -62,18 +83,12 @@ public class DrawIdeaVisualizationActivity extends AppCompatActivity {
 
             }
         });
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //       setSupportActionBar(toolbar);
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);*/
+  }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Runtime.getRuntime().gc();
     }
 
 }

@@ -37,18 +37,33 @@ public class DrawManager implements OnTouchListener {
     private IDrawOperation fCurrentOperation = null;
     private ACreator fCurrentCreator = null;
     //Initialized onSizeChanged in view
+
+    private Bitmap smallerBackgroundImage;
+
     private Bitmap fBackgroundImage;
     private Canvas fBackgroundCanvas;
     private Bitmap fBackgroundImageBackUP;
     private Canvas fBackgroundCanvasBackUP;
     private boolean initialized = false; //Gets fully initialized on screen size changed, with the bitmaps
     private PaintState fPaintState = new PaintState();
-
+    private int w;
+    private int h;
     public DrawManager() {
         fOperations = new LinkedList<IDrawOperation>();
         fCreators = new HashMap<Integer, ACreator>();
         fCurrentCreator = null;
     }
+    public DrawManager(Boolean b) {
+        fOperations = new LinkedList<IDrawOperation>();
+        fCreators = new HashMap<Integer, ACreator>();
+        fCurrentCreator = null;
+        this.initialized = true;
+    }
+
+    public void setW(int w){this.w=w;}
+
+    public void setH(int h){this.h=h;}
+
 
     public PaintState getPaintState() {
         return fPaintState;
@@ -223,10 +238,18 @@ public class DrawManager implements OnTouchListener {
         return result;
     }
 
+    public Bitmap copyResizedBitmap() {
+//        Bitmap result = Bitmap.createBitmap(fBackgroundImage.getWidth(), fBackgroundImage.getHeight(), Bitmap.Config.ARGB_8888);
+        smallerBackgroundImage = getResizedBitmap(getBitmap(), w, h);
+        return smallerBackgroundImage;
+    }
+
     public Bitmap getBitmap() {
         return fBackgroundImage;
     }
-
+    public Bitmap getSmallerBitmap() {
+        return smallerBackgroundImage;
+    }
     public void putBitmapAsBackground(Bitmap aBitmap) {
 
         float width = getWidth();
@@ -319,4 +342,22 @@ public class DrawManager implements OnTouchListener {
             return y;
         }
     }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
+    }
+
 }

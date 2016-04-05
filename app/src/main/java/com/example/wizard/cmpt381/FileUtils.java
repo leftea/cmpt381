@@ -26,6 +26,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -51,12 +53,11 @@ public class FileUtils {
         return aContext.getFilesDir();
     }
 
+    public void saveSmaller(Context aContext) {
+        new SavingImageTask(aContext, fManager.copyResizedBitmap()).execute();
+    }
     public void save(Context aContext) {
         new SavingImageTask(aContext, fManager.copyBitmap()).execute();
-    }
-
-    public void saveOnPause(Context aContext) {
-        new SavingImageTaskOnPause(aContext, fManager.copyBitmap()).execute();
     }
 
 
@@ -64,15 +65,46 @@ public class FileUtils {
         new LoadImageTask(aContext, fManager).execute();
     }
 
-    public void loadTempImage(Context aContext) {
-        File dir = getDirectory(fContext);
-        if (dir != null && dir.exists() && dir.isDirectory()) {
-            File img = new File(dir, FILENAME);
-            if (img != null && img.exists()) {
-                new ReloadImageTask(aContext, Uri.fromFile(img), fManager).execute();
+    public static class LoadImageButtonTask extends AsyncTask<Object, Integer, Bitmap> {
+
+        private Context fContext;
+        private ImageButton fImageButton;
+
+        public LoadImageButtonTask(Context aContext, ImageButton aImageButton) {
+            super();
+            fContext = aContext;
+            fImageButton = aImageButton;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Object... objects) {
+            Bitmap bitmap;
+            File fFile = new File(getDirectory(fContext), FILENAME);
+            Log.d(TAG, "LoadImageTask background: \n Loading image found in: " + fFile.getAbsolutePath());
+
+            try {
+
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(fFile));
+
+            } catch (FileNotFoundException e) {
+                bitmap = null;
+            }
+
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (bitmap != null) {
+                fImageButton.setImageBitmap(bitmap);
+                fImageButton.invalidate();
+                Log.d(TAG, "Bitmap has been loaded");
+            } else {
+                Toast.makeText(fContext, "No bitmap loaded", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     public static class SavingImageTask extends AsyncTask<Object, Integer, Boolean> {
 
@@ -116,13 +148,6 @@ public class FileUtils {
         @Override
         protected void onPostExecute(Boolean aBoolean) {
 
-            // addFileToMedia(fFile);
-            if (aBoolean) {
-                Toast.makeText(fContext, fContext.getResources().getString(R.string.canvas_saved), Toast.LENGTH_SHORT).show();
-                super.onPostExecute(true);
-            } else {
-                Toast.makeText(fContext, "Error during the saving", Toast.LENGTH_SHORT).show();
-            }
         }
 
         /*protected void addFileToMedia(File aFile) {
@@ -136,24 +161,6 @@ public class FileUtils {
                 );
             }
         }*/
-    }
-
-    public static class SavingImageTaskOnPause extends SavingImageTask {
-
-        public SavingImageTaskOnPause(Context aContext, Bitmap aBitmap) {
-            super(aContext, aBitmap);
-        }
-
-        /*
-                @Override
-                protected void onPostExecute(Boolean aBoolean) {
-                    addFileToMedia(fFile);
-                }
-        */
-        @Override
-        protected String getFileName() {
-            return FILENAME;
-        }
     }
 
     public static class LoadImageTask extends AsyncTask<Object, Integer, Bitmap> {
@@ -189,8 +196,7 @@ public class FileUtils {
             if (bitmap != null) {
                 fManager.putBitmapAsBackground(bitmap);
                 Log.d(TAG, "DrawManager putBitmapAsBackground has been called");
-            } else {
-                Toast.makeText(fContext, "Error during the loading", Toast.LENGTH_SHORT).show();
+
             }
         }
     }

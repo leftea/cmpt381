@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class SimpleBrushCreator extends ACreator {
 
-    private final float simpleBrushWidth = 40f; //Todo: Turn into slider
+    private final float simpleBrushWidth = 25f; //Todo: Turn into slider
     protected Painter fPainter;
     protected LineOperation fCurrentOperation = null;
     protected float fX;
