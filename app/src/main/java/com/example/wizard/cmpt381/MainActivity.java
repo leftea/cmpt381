@@ -44,14 +44,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        findViewById(R.id.redundantButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, DrawIdeaCanvasActivity.class).putExtra("IDEA_ID", "test"));
-            }
-        });
-
         findViewById(R.id.idea1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

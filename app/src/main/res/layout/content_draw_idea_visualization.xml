@@ -29,21 +29,21 @@
             android:layout_weight="0.47"></Spinner>
 
         <ImageButton
-            android:id="@+id/imageBrushButton"
+            android:id="@+id/imageBrushButtonV"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="@string/action_image_brush"
             android:src="@mipmap/ic_launcher_paint" />
 
         <ImageButton
-            android:id="@+id/eraserButton"
+            android:id="@+id/eraserButtonV"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="eraser"
             android:src="@mipmap/ic_launcher_erase" />
 
         <ImageButton
-            android:id="@+id/paletteButton"
+            android:id="@+id/paletteButtonV"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:contentDescription="palette"
@@ -78,7 +78,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/saveButton"
+                android:id="@+id/saveButtonV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
                 android:layout_gravity="right"

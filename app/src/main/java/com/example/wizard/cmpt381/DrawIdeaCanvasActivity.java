@@ -27,8 +27,6 @@ private IdeaCanvasView icv;
     private DrawManager fManager;
     private PaintState fPaintState;
     private Context fContext;
-    private Boolean drawButtonSelected;
-    private Boolean eraserButtonSelected;
     private ImageButton paletteBtn;
     private int backgroundColor;
     private int textColor;
@@ -52,9 +50,6 @@ private IdeaCanvasView icv;
         if (ID == null)
             ID = "test";
 
-
-        drawButtonSelected = false;
-        eraserButtonSelected = false;
         icv = (IdeaCanvasView) findViewById(R.id.ideaCanvasView);
         fManager = icv.getCanvasManager();
         fPaintState = fManager.getPaintState();
