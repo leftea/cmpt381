@@ -27,7 +27,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -35,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.util.concurrent.ExecutionException;
 
 public class FileUtils {
 
@@ -56,8 +56,9 @@ public class FileUtils {
     public void saveSmaller(Context aContext) {
         new SavingImageTask(aContext, fManager.copyResizedBitmap()).execute();
     }
-    public void save(Context aContext) {
-        new SavingImageTask(aContext, fManager.copyBitmap()).execute();
+
+    public void save(Context aContext) throws ExecutionException, InterruptedException {
+        new SavingImageTask(aContext, fManager.copyBitmap()).execute().get();
     }
 
 

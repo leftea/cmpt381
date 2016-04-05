@@ -10,7 +10,7 @@ import java.util.Random;
 public class EraserCreator extends SimpleBrushCreator {
 
     private int eraserColour;
-    private float eraserWidth = 40f;
+    private float eraserWidth = 400f;
     public EraserCreator(DrawManager aManager, View aView, int eraserColour) {
         super(aManager, aView);
         this.eraserColour = eraserColour;
@@ -23,7 +23,7 @@ public class EraserCreator extends SimpleBrushCreator {
 
         Paint p = getPaint();
         p.setStyle(Paint.Style.STROKE);
-        p.setStrokeWidth(40f);
+        p.setStrokeWidth(eraserWidth);
         p.setColor(eraserColour);
         fCurrentOperation = new LineOperation(x, y, p);
         fX = x;

@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import com.example.wizard.cmpt381.DrawingTools.EraserCreator;
 import com.example.wizard.cmpt381.DrawingTools.SimpleBrushCreator;
 
+import java.util.concurrent.ExecutionException;
+
 public class DrawIdeaCanvasActivity extends AppCompatActivity {
 
     private static final int PAINTBRUSH = 0;
@@ -81,7 +83,13 @@ private IdeaCanvasView icv;
             @Override
             public void onClick(View v) {
 //TODO:  Save this somewhere.                fManager.getBitmap()
-                fUtils.save(fContext);
+                try {
+                    fUtils.save(fContext);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Intent intent = new Intent(DrawIdeaCanvasActivity.this, DrawIdeaVisualizationActivity.class);
                 intent.putExtra("IDEA_VIS", ID+"_VIS");
 

@@ -2,8 +2,6 @@ package com.example.wizard.cmpt381;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Matrix;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -19,22 +17,21 @@ import com.example.wizard.cmpt381.DrawingTools.EraserCreator;
 import com.example.wizard.cmpt381.DrawingTools.SimpleBrushCreator;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class DrawIdeaVisualizationActivity extends AppCompatActivity {
 
     private static final int PAINTBRUSH = 0;
     private static final int ERASER = 1;
-
+    private final String TAG = "DrawIVActivity";
+    FileUtils fUtils;
     private PaintState fPaintState;
     private ImageButton paletteBtn;
     private int backgroundColor;
     private int textColor;
-
-    private final String TAG = "DrawIVActivity";
     private DrawManager fManager;
     private IdeaVisualizationView fDrawView;
     private Context fContext;
-    FileUtils fUtils;
     private Bundle fExtras;
     private String idea_ID;
 
@@ -82,7 +79,13 @@ public class DrawIdeaVisualizationActivity extends AppCompatActivity {
         findViewById(R.id.saveButtonV).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fUtils.save(fContext);
+                try {
+                    fUtils.save(fContext);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 startActivity(new Intent(DrawIdeaVisualizationActivity.this, MainActivity.class));
             }
         });
