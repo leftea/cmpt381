@@ -21,10 +21,8 @@ public class IdeaCanvasView extends View implements OnTouchListener {
     Boolean touchable;
     Boolean erase;
     private DrawManager fManager;
-    private IdeaCanvas model;
     private int w;
     private int h;
-    private float mX, mY;
     public IdeaCanvasView(Context c) {
         super(c);
         context=c;

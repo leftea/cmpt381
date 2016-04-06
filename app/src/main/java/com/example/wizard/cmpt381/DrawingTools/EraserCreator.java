@@ -7,12 +7,19 @@ import com.example.wizard.cmpt381.DrawManager;
 
 import java.util.Random;
 
-public class EraserCreator extends SimpleBrushCreator {
+public class EraserCreator extends ACreator {
+
 
     private int eraserColour;
-    private float eraserWidth = 400f;
+    private Painter fPainter;
+    private LineOperation fCurrentOperation = null;
+    private float fX;
+    private float fY;
+
+
     public EraserCreator(DrawManager aManager, View aView, int eraserColour) {
         super(aManager, aView);
+        fPainter = new Painter();
         this.eraserColour = eraserColour;
     }
 
@@ -23,6 +30,7 @@ public class EraserCreator extends SimpleBrushCreator {
 
         Paint p = getPaint();
         p.setStyle(Paint.Style.STROKE);
+        float eraserWidth = 400f;
         p.setStrokeWidth(eraserWidth);
         p.setColor(eraserColour);
         fCurrentOperation = new LineOperation(x, y, p);
